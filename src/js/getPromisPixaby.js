@@ -1,34 +1,46 @@
-// Список параметрів рядка запиту, які тобі обов'язково необхідно вказати:
+// //*=========== данні для запиту ==============
+// const URL = 'https://pixabay.com/api';
+// const KEY = '32938330-25a7d9530d370aeaa9b179f57';
+// const OPTIONS =
+//   'image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1';
 
-// key - твій унікальний ключ доступу до API.
-// q - термін для пошуку. Те, що буде вводити користувач.
-// image_type - тип зображення. На потрібні тільки фотографії, тому постав значення photo.
-// orientation - орієнтація фотографії. Постав значення horizontal.
-// safesearch - фільтр за віком. Постав значення true.
-// У відповіді буде масив зображень, що задовольнили критерії параметрів запиту.
-// Кожне зображення описується об'єктом, з якого тобі цікаві тільки наступні властивості:
+// //*===========  ==============
+// function featchData(query) {
+//   return fetch(`${URL}/?key=${KEY}&q=${query}&${OPTIONS}`).then(res =>
+//     res.json()
+//   );
+// }
 
-// webformatURL - посилання на маленьке зображення для списку карток.
-// largeImageURL - посилання на велике зображення.
-// tags - рядок з описом зображення. Підійде для атрибуту alt.
-// likes - кількість лайків.
-// views - кількість переглядів.
-// comments - кількість коментарів.
-// downloads - кількість завантажень.
-// Якщо бекенд повертає порожній масив, значить нічого підходящого не було знайдено.
-// У такому разі показуй повідомлення з текстом "Sorry, there are no images matching your search query.
-// Please try again.". Для повідомлень використовуй бібліотеку notiflix.
+// export default featchData;
 
-//*=========== данні для запиту ==============
+//?==================================
 const URL = 'https://pixabay.com/api';
 const KEY = '32938330-25a7d9530d370aeaa9b179f57';
-const OPTIONS = 'image_type=photo&orientation=horizontal&safesearch=true';
+const OPTIONS =
+  'image_type=photo&orientation=horizontal&safesearch=true&per_page=40';
 
-//*===========  ==============
-function featchData(query) {
-  return fetch(`${URL}/?key=${KEY}&q=${query}&${OPTIONS}`).then(res =>
-    res.json()
-  );
+export default class PixabayApiService {
+  constructor() {
+    this.page = 1;
+    this.query = '';
+  }
+
+  getImage() {
+    return fetch(
+      `${URL}/?key=${KEY}&q=${this.query}&${OPTIONS}&page=${this.page}`
+    )
+      .then(res => res.json())
+      .then(({ hits }) => {
+        this.nextPage();
+        return hits;
+      });
+  }
+
+  nextPage() {
+    this.page += 1;
+  }
+
+  resetPage() {
+    this.page = 1;
+  }
 }
-
-export default featchData;

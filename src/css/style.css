@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   padding: 20px;
+  margin-bottom: 20px;
   background-color: rgb(34, 145, 219);
 }
 
@@ -18,4 +19,21 @@
   background-color: rgb(34, 145, 219);
   border: 1px solid transparent;
   border-radius: 30;
+  cursor: pointer;
+}
+
+.photo-card {
+  display: inline-block;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px;
+}
+
+button:disabled {
+  background-color: #c1c1c1;
+  cursor: not-allowed;
+}
+
+button.hidden {
+  display: none;
 }
