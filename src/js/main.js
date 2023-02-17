@@ -1,6 +1,6 @@
 //*=========== імпорт бібліотек та функцій ==================
 import Notiflix from 'notiflix';
-import axios from 'axios';
+// import axios from 'axios';
 import PixabayApiService from './getPromisPixaby.js';
 import LoadMoreBtn from './components/LoadMoreBtn.js';
 //*=========== доступ до тегів ==============
@@ -18,7 +18,7 @@ const loadMoreBtn = new LoadMoreBtn({ selector: '.load-more', isHidden: true });
 form.addEventListener('submit', onSubmit);
 loadMoreBtn.button.addEventListener('click', fetchArticles);
 
-//*===========  ==============
+//*=========== сабміт ==============
 function onSubmit(e) {
   e.preventDefault();
 
@@ -35,30 +35,24 @@ function onSubmit(e) {
 }
 
 //*=========== кнопка => добавити ще об'єктів на сторінку ==============
-// function fetchArticles() {
-//   loadMoreBtn.disable();
-
-//   return pixabayApiService
-//     .getImage()
-//     .then(hits => {
-//       if (hits.length === 0) throw new Error('error => 1');
-
-//       return hits.reduce((markup, hits) => createMarkup(hits) + markup, '');
-//     })
-//     .then(markup => {
-//       appendNewToList(markup);
-//       loadMoreBtn.enable();
-//     })
-
-//     .catch(onError);
-// }
-
 async function fetchArticles() {
   loadMoreBtn.disable();
 
   try {
-    const hits = await pixabayApiService.getImage();
-    if (hits.length === 0) throw new Error('error => 1');
+    const data = await pixabayApiService.getImage();
+    // деструктуризуємо з data
+    const { hits, totalHits } = data;
+    // або
+    //     const hits = data.hits;
+    //     const totalHits = data.totalHits;
+
+    let page = pixabayApiService.page - 1;
+    let limitPerPage = pixabayApiService.per_page;
+    const totalPages = totalHits / limitPerPage;
+
+    if (hits.length === 0) throw new Error(onNothingFound());
+    if (page > totalPages) throw new Error(onNoMore());
+
     const markup = hits.reduce(
       (markup, hits) => createMarkup(hits) + markup,
       ''
@@ -66,15 +60,22 @@ async function fetchArticles() {
     appendNewToList(markup);
     loadMoreBtn.enable();
   } catch (err) {
-    return onError(err);
+    return err;
   }
 }
 
 //*=========== функції помилок ==============
-function onError(err) {
+function onNothingFound(err) {
+  loadMoreBtn.hide();
+  Notiflix.Notify.failure(
+    'Sorry, there are no images matching your search query. Please try again.'
+  );
+}
+
+function onNoMore() {
   loadMoreBtn.hide();
   Notiflix.Notify.info(
-    '"Sorry, there are no images matching your search query. Please try again."'
+    "We're sorry, but you've reached the end of search results."
   );
 }
 
@@ -116,31 +117,6 @@ function createMarkup({
   </div>
 </div>`;
 }
-
-//*===========  ==============
-// async function getUser() {
-//   try {
-//     const response = await axios.get('/user?ID=12345');
-//     console.log(response);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-// axios
-//   .get(`${URL}/?key=${KEY}&q=yellow+flower&${OPTIONS}`)
-//   .then(({ data }) => console.log(data.hits));
-
-// fetch(`${URL}/?key=${KEY}&q=yellow+flower&${OPTIONS}`)
-//   .then(res => res.json())
-//   .then(console.log);
-//*===========  ==============
-
-//*===========  ==============
-
-//*===========  ==============
-
-//*===========  ==============
 
 //*=========== завдання ==============
 // Для HTTP-запитів використана бібліотека axios.
@@ -228,3 +204,5 @@ function createMarkup({
 
 //? Нескінченний скрол
 // Замість кнопки «Load more», можна зробити нескінченне завантаження зображень під час прокручування сторінки. Ми надаємо тобі повну свободу дій в реалізації, можеш використовувати будь-які бібліотеки.
+
+//*================================================================
