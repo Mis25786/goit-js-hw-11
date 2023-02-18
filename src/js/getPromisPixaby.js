@@ -104,6 +104,17 @@
 //       page: this.page,
 //       per_page: 40,
 //     });
+//
+// const option = {
+//   params:{
+//   key: KEY,
+//   q: this.query,
+//   image_type: 'photo',
+//   orientation: 'horizontal',
+//   safesearch: true,
+//   page: this.page,
+//   per_page: 40,}
+// };
 
 //     try {
 //       const res = await axios.get(`${URL}?${OPTIONS.toString()}`);
@@ -153,6 +164,7 @@ export default class PixabayApiService {
         `${URL}/?key=${KEY}&q=${this.query}&${OPTIONS}&per_page=${this.per_page}&page=${this.page}`
       );
 
+      // console.log(res);
       // console.log(res.data);
       // console.log(res.data.hits);
       // console.log(res.data.totalHits);

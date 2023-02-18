@@ -1,39 +1,213 @@
-body {
-  background-color: rgb(142, 235, 219);
+/* Указываем box sizing */
+*,
+*::before,
+::after {
+  box-sizing: border-box;
 }
 
+/* / Убираем внутренние отступы / ul[class], */
+ol[class] {
+  padding: 0;
+}
+
+/* / Убираем внешние отступы / body, */
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* / Выставляем основные настройки по-умолчанию для body / */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* / Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class/ */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* / Элементы a, у которых нет класса, сбрасываем до дефолтных стилей / */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* / Упрощаем работу с изображениями / */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Наследуем шрифты для инпутов и кнопок /
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/ Удаляем все анимации и переходы для людей, которые предпочитай их не использовать */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  list-style: none;
+}
+
+/* ============================================== */
+
+/* форма */
 .search-form {
   display: flex;
   justify-content: center;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: rgb(34, 145, 219);
+  background-image: linear-gradient(to right, #2196f3, yellow);
 }
 
+input {
+}
+
+/* кнопка інпута */
+.btn-form {
+  color: yellow;
+  background-color: #2196f3;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-form:hover,
+.btn-form:focus {
+  color: #2196f3;
+  background-color: yellow;
+}
+
+/* кнопка додати ще */
 .load-more {
   display: flex;
+  height: 50px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
   padding: 20px;
   font-size: 20px;
-  font-family: fantasy;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   color: #ffffff;
-  background-color: rgb(34, 145, 219);
-  border: 1px solid transparent;
+  background-color: #2196f3;
+  border: none;
   border-radius: 30;
   cursor: pointer;
+
+  align-items: center;
 }
 
-.photo-card {
-  display: inline-block;
-  border: 1px solid #fff;
-  padding: 10px;
-  margin: 10px;
-  background-color: #fff;
-  border-radius: 10px;
+.load-more:hover,
+.load-more:focus {
+  color: #2196f3;
+  background-color: yellow;
+  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 15%);
 }
+
+/* галерея */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  /* width: calc((100%-60px) / 4); */
+  /* display: inline-block; */
+
+  justify-content: space-evenly;
+}
+
+/* бокс картинки з підписами */
+.photo-card {
+  display: flex;
+  width: 300px;
+  position: relative;
+
+  /* width: calc((100%-80px) / 4); */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 10px 10px 8px 2px rgba(0, 0, 0, 0.3);
+
+  /* flex-direction: column; */
+
+  /* overflow: hidden; */
+}
+
+.photo-card:hover,
+.photo-card:focus {
+  /* outline: 2px solid aqua; */
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.3);
+}
+
+.images {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  object-fit: cover;
+  /* flex-direction: column; */
+  width: 100%;
+  height: 100%;
+
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  /* height: 300px; */
+}
+
+a {
+}
+
+/* бокс підписів */
+.info {
+  position: absolute;
+  display: flex;
+  text-align: center;
+
+  /* font-size: 10px; */
+  /* font-style: italic; */
+}
+
+/* підписи */
+.info-item {
+  color: yellow;
+  background-color: rgba(168, 168, 168, 0.3);
+}
+
+/* спам */
+.span {
+  color: #2196f3;
+}
+
+/* =============================== */
 
 button:disabled {
   background-color: #c1c1c1;
@@ -42,22 +216,4 @@ button:disabled {
 
 button.hidden {
   display: none;
-}
-
-/* //*======================= */
-.alert {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 8px;
-  text-align: center;
-  background-color: tomato;
-  color: #fff;
-  transform: translatey(-100%);
-  transition: transform 250ms ease-in-out;
-}
-
-.alert.is-visible {
-  transform: translatey(0);
 }
